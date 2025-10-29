@@ -13,13 +13,15 @@ python inference.py \
 """
 
 import torch
-import os
+import os, sys
+from pathlib import Path
 from torch.utils.data import DataLoader
 from torchvision import transforms
 from typing import Optional, Tuple
 from tqdm.auto import tqdm
 
-from inference_utils import VideoReader, VideoWriter, ImageSequenceReader, ImageSequenceWriter
+sys.path.append(Path(__file__).resolve().parents[1])
+from .inference_utils import VideoReader, VideoWriter, ImageSequenceReader, ImageSequenceWriter
 
 def convert_video(model,
                   input_source: str,
@@ -112,7 +114,7 @@ def convert_video(model,
         device = param.device
     
     if (output_composition is not None) and (output_type == 'video'):
-        bgr = torch.tensor([120, 255, 155], device=device, dtype=dtype).div(255).view(1, 1, 3, 1, 1)
+        bgr = torch.tensor([255,255,255], device=device, dtype=dtype).div(255).view(1, 1, 3, 1, 1)
     
     try:
         with torch.no_grad():
